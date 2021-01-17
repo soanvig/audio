@@ -23,15 +23,15 @@ module Sound where
         GT -> 1 / absMaxValue
         EQ -> 1
 
-  sound :: Frequency -> (Time -> Sample) -> [Sample]
-  sound freq waveFunction = adsr $ map ((* volume) . waveFunction) $ Wave.generate freq duration
+  sound :: (Time -> Sample) -> Frequency  -> [Sample]
+  sound waveFunction freq = adsr $ map ((* volume) . waveFunction) $ Wave.generate freq duration
     where
       volume = 0.2
-      duration = 5
-      adsr = Envelope.decay 0.2 . Envelope.attack 0.3
+      duration = 3
+      adsr = Envelope.decay 2.5 . Envelope.attack 0.5
 
   note :: Float -> Note
-  note n = sound freq Wave.sinWave
+  note n = sound Wave.sinWave freq
     where
       baseNoteFreq :: Frequency
       baseNoteFreq = 440.0
@@ -39,6 +39,11 @@ module Sound where
       -- https://pages.mtu.edu/~suits/NoteFreqCalcs.html
       freq :: Frequency
       freq = baseNoteFreq * (2 ** (n / 12))
+  
+  delay :: Seconds -> Note -> Note
+  delay secs note = zeros ++ note
+    where
+      zeros = replicate (floor (secs * Wave.bpm)) 0.0
 
   sumNotes :: [Note] -> Note
   sumNotes = foldl (zipWithPadded (+) 0 0) []
