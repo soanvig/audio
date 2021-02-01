@@ -1,5 +1,5 @@
 module Sound where
-  import qualified Wave
+  import qualified Oscillator
   import qualified Envelope
   import qualified Math
   import Helpers
@@ -10,10 +10,11 @@ module Sound where
   type Sample = Float
   type Note = [Sample]
   type Time = Float
+  type ADSR = [Sample] -> [Sample]
 
   -- proportionally reduce signal amplitude to range <-1;1>
-  volumeNormalization :: [Float] -> [Float]
-  volumeNormalization list = map (* proportional) list
+  normalizeVolume :: [Float] -> [Float]
+  normalizeVolume list = map (* proportional) list
     where
       maxValue = Math.maxFrom (head list) list
       minValue = Math.minFrom (head list) list
@@ -22,16 +23,14 @@ module Sound where
         LT -> 1
         GT -> 1 / absMaxValue
         EQ -> 1
-
-  sound :: (Time -> Sample) -> Frequency  -> [Sample]
-  sound waveFunction freq = adsr $ map ((* volume) . waveFunction) $ Wave.generate freq duration
+  
+  sound :: (Time -> Sample) -> ADSR -> Frequency -> [Sample]
+  sound waveFunction adsr freq = adsr $ map waveFunction $ Oscillator.generate freq duration
     where
-      volume = 0.2
-      duration = 3
-      adsr = Envelope.decay 2.5 . Envelope.attack 0.5
+      duration = 0.75
 
   note :: Float -> Note
-  note n = sound Wave.sinWave freq
+  note n = sound Oscillator.sinWave Envelope.unit freq
     where
       baseNoteFreq :: Frequency
       baseNoteFreq = 440.0
@@ -43,7 +42,9 @@ module Sound where
   delay :: Seconds -> Note -> Note
   delay secs note = zeros ++ note
     where
-      zeros = replicate (floor (secs * Wave.bpm)) 0.0
+      zeros = replicate (floor (secs * Oscillator.bpm)) 0.0
 
   sumNotes :: [Note] -> Note
   sumNotes = foldl (zipWithPadded (+) 0 0) []
+
+  

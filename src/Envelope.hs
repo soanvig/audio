@@ -7,6 +7,9 @@ module Envelope where
   
   bpm = 48000
 
+  unit :: [Sample] -> [Sample]
+  unit samples = samples
+
   attack :: Seconds -> [Sample] -> [Sample]
   attack duration samples = ease 0 (take bpmCount samples) ++ drop bpmCount samples
     where

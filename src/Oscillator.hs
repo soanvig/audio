@@ -1,4 +1,4 @@
-module Wave where
+module Oscillator where
 
   type Frequency = Float
   type Seconds = Float
@@ -9,7 +9,7 @@ module Wave where
   bpm = 48000
 
   generate :: Frequency -> Duration -> [Time]
-  generate freq dur = map (* step) [0.0 .. bpm * dur]
+  generate freq duration = map (* step) [0.0 .. bpm * duration]
     where
       step = freq * 2 * pi / bpm
 

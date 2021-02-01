@@ -25,11 +25,12 @@ source-repository head
 
 library
   exposed-modules:
+      Bank
       Envelope
       Helpers
       Math
+      Oscillator
       Sound
-      Wave
   other-modules:
       Paths_audio
   hs-source-dirs:
