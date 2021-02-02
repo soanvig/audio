@@ -4,12 +4,11 @@ module Oscillator where
   type Seconds = Float
   type Time = Float
   type Sample = Float
-  type Duration = Seconds
 
-  bpm = 48000
+  bpm = 44100
 
-  generate :: Frequency -> Duration -> [Time]
-  generate freq duration = map (* step) [0.0 .. bpm * duration]
+  generate :: Frequency -> [Time]
+  generate freq = map (* step) [0.0 ..]
     where
       step = freq * 2 * pi / bpm
 

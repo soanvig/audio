@@ -11,6 +11,13 @@ packages:
       sha256: 80f99916b296960ec0f479533b2b286c01afd422ef4d0e1a9a06c314769002b4
   original:
     hackage: ease-0.1.0.2
+- completed:
+    hackage: proteaaudio-0.9.0@sha256:d22826d3158c71f13c2636417caf5118b44d49693e8827399d59d5dff96f49f9,2685
+    pantry-tree:
+      size: 1874
+      sha256: f22bbe1aa565570643ee22d4e115116e6b5e2e9611e4cc5fd5a96f95253c3608
+  original:
+    hackage: proteaaudio-0.9.0
 snapshots:
 - completed:
     size: 533053

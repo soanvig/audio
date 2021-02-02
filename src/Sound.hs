@@ -10,27 +10,27 @@ module Sound where
   type Sample = Float
   type Note = [Sample]
   type Time = Float
-  type ADSR = [Sample] -> [Sample]
 
   -- proportionally reduce signal amplitude to range <-1;1>
-  normalizeVolume :: [Float] -> [Float]
-  normalizeVolume list = map (* proportional) list
-    where
-      maxValue = Math.maxFrom (head list) list
-      minValue = Math.minFrom (head list) list
-      absMaxValue = max (abs maxValue) (abs minValue)
-      proportional = case compare absMaxValue 1 of
-        LT -> 1
-        GT -> 1 / absMaxValue
-        EQ -> 1
+  -- normalizeVolume :: [Float] -> [Float]
+  -- normalizeVolume list = map (* proportional) list
+  --   where
+  --     maxValue = Math.maxFrom (head list) list
+  --     minValue = Math.minFrom (head list) list
+  --     absMaxValue = max (abs maxValue) (abs minValue)
+  --     proportional = case compare absMaxValue 1 of
+  --       LT -> 1
+  --       GT -> 1 / absMaxValue
+  --       EQ -> 1
+
+  gain :: Float -> Note -> Note
+  gain gainValue = map (gainValue *)
   
-  sound :: (Time -> Sample) -> ADSR -> Frequency -> [Sample]
-  sound waveFunction adsr freq = adsr $ map waveFunction $ Oscillator.generate freq duration
-    where
-      duration = 0.75
+  sound :: (Time -> Sample) -> Frequency -> [Sample]
+  sound waveFunction freq = map waveFunction $ Oscillator.generate freq
 
   note :: Float -> Note
-  note n = sound Oscillator.sinWave Envelope.unit freq
+  note n = sound Oscillator.sinWave freq
     where
       baseNoteFreq :: Frequency
       baseNoteFreq = 440.0
@@ -39,10 +39,10 @@ module Sound where
       freq :: Frequency
       freq = baseNoteFreq * (2 ** (n / 12))
   
-  delay :: Seconds -> Note -> Note
-  delay secs note = zeros ++ note
-    where
-      zeros = replicate (floor (secs * Oscillator.bpm)) 0.0
+  -- delay :: Seconds -> Note -> Note
+  -- delay secs note = zeros ++ note
+  --   where
+  --     zeros = replicate (floor (secs * Oscillator.bpm)) 0.0
 
   sumNotes :: [Note] -> Note
   sumNotes = foldl (zipWithPadded (+) 0 0) []

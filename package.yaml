@@ -24,6 +24,7 @@ dependencies:
 - process
 - bytestring
 - ease
+- proteaaudio
 
 library:
   source-dirs: src

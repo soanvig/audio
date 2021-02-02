@@ -3,10 +3,13 @@ module Bank where
   import qualified Oscillator
   import qualified Envelope
 
-  import Sound (sumNotes, sound, Note)
+  import Sound (sumNotes, sound, Note, note)
 
   bell :: Note
-  bell = map (0.1 *) $ sumNotes (map sinSound freqs)
+  bell = sumNotes (map sinSound freqs)
     where
-      sinSound = sound Oscillator.sinWave (Envelope.attack 0.5 . Envelope.decay 1)
+      sinSound = sound Oscillator.sinWave
       freqs = [220, 440, 528, 660, 880, 1100, 1320, 1830]
+
+  flat :: Note
+  flat = map (0.1 * ) $ sound Oscillator.sinWave 440
