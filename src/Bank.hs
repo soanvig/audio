@@ -12,4 +12,4 @@ module Bank where
       freqs = [220, 440, 528, 660, 880, 1100, 1320, 1830]
 
   flat :: Note
-  flat = map (0.1 * ) $ sound Oscillator.sinWave 440
+  flat = sound Oscillator.sinWave 440

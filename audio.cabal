@@ -25,10 +25,12 @@ source-repository head
 
 library
   exposed-modules:
+      AudioSystem
       Bank
+      Config
       Envelope
       Helpers
-      Math
+      Keyboard
       Oscillator
       Sound
   other-modules:

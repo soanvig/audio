@@ -24,14 +24,12 @@ module Oscillator where
       a = 1
       p = 6.15 -- tuned, to match 220hz example in https://en.wikipedia.org/wiki/Triangle_wave
 
-  -- sawtooth over sin ? not sure
-  -- interesting effect though
-  sawtoothWave :: Time -> Sample
+  sawtoothSinWave :: Time -> Sample
   sawtoothWave v = sinV - abs sinV
     where
       sinV = sin v
 
-  sawtoothWave2 :: Time -> Sample
+  sawtoothWave :: Time -> Sample
   sawtoothWave2 v = ((-2) * a / pi) * atan (1 / tan ( v * pi / p))
     where
       a = 1

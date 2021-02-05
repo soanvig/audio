@@ -39,11 +39,6 @@ module Sound where
       freq :: Frequency
       freq = baseNoteFreq * (2 ** (n / 12))
   
-  -- delay :: Seconds -> Note -> Note
-  -- delay secs note = zeros ++ note
-  --   where
-  --     zeros = replicate (floor (secs * Oscillator.bpm)) 0.0
-
   sumNotes :: [Note] -> Note
   sumNotes = foldl (zipWithPadded (+) 0 0) []
 
